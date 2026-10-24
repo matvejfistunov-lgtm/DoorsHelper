@@ -21,6 +21,7 @@ local BaseUrl = "https://raw.githubusercontent.com/matvejfistunov-lgtm/DoorsHelp
 getgenv().Abysall = {
     Environment = loadstring(game:HttpGet(BaseUrl .. "Environment.luau"))(),
     ESPLibrary = loadstring(game:HttpGet(BaseUrl .. "ESP.luau"))(),
+	["16Notice"] = loadstring(game:HttpGet(BaseUrl .. "16Notice.luau"))(),
     Legit = true
 }
 
