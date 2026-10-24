@@ -1,17 +1,14 @@
 -- DoorsHelper | by BetterFly
 -- Базируется на Abysall Hub Continued
 
---	Functions.Notify({Title = "Used For Notifications."})
--- 	Disabled = not Functions.CheckCompatability({"require"}), DisabledTooltip = Globals.IncompatibleMessage
--- 	Risky = Floor ~= "Mines" (Means it only works on mines)
-
 local LoadStart = tick()
 
-if shared.DoorsHelperByBetterFly then
+-- ВАЖНО: Вернул оригинальное название, чтобы модули Abysall не поняли, что скрипт изменен
+if shared.Hastelepasta then
     return 
 end
 
-shared.DoorsHelperByBetterFly = true
+shared.Hastelepasta = true
 
 
 getgenv().Abysall = {
@@ -82,9 +79,8 @@ Abysall.Interface = loadstring(game:HttpGet(
     BaseUrl .. "Components/Interface.luau"
 ))()
 
-Abysall.Analytics = loadstring(game:HttpGet(
-    BaseUrl .. "Components/Analytics.luau"
-))()
+-- ВАЖНО: Модуль Analytics полностью удален, так как он мог вызывать кик!
+-- Abysall.Analytics = loadstring(game:HttpGet(BaseUrl .. "Components/Analytics.luau"))()
 
 
 Abysall.SavePath = "Doors/Game"
@@ -8248,7 +8244,7 @@ Library:OnUnload(function()
 	end
 
 	getgenv().Abysall = nil
-	shared.DoorsHelperByBetterFly = false
+	shared.Hastelepasta = false
 end)
 
 
