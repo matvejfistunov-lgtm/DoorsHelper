@@ -1,16 +1,11 @@
 local Library = (Abysall.UILibrary == "Linoria" and "LinoriaLib" or "Obsidian")
 -- local BaseUrl = "https://raw.githubusercontent.com/mstudio45/" .. Library .. "/refs/heads/main/" -- broken since upio github got banned
 local BaseUrl = "https://raw.githubusercontent.com/deividcomsono/Obsidian/refs/heads/main/"
-local AbysallUrl = ""
 
 local Interface = {
 	Library = loadstring(game:HttpGet(BaseUrl .. "Library.lua"))(),
 	SaveManager = loadstring(game:HttpGet(BaseUrl .. "addons/SaveManager.lua"))(),
 	ThemeManager = loadstring(game:HttpGet(BaseUrl .. "addons/ThemeManager.lua"))(),
-
-	ApplyInfoTab = loadstring(game:HttpGet(AbysallUrl .. "Components/InfoTab.luau"))(),
-	ApplySettingsTab = loadstring(game:HttpGet(AbysallUrl .. "Components/SettingsTab.luau"))()
-}
 
 Interface.ThemeManager.BuiltInThemes = {
 	["Rat"] = { 1, { MainColor = "000000", FontFace = "Code", FontColor = "ffffff", OutlineColor = "323232", BackgroundColor = "000000", BackgroundImage = "96328525673956", AccentColor = "3e8846" } },
