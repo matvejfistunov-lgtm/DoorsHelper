@@ -76,7 +76,7 @@ if Abysall.Environment.writefile and Abysall.Environment.readfile then
 end
 
 Abysall.Interface = loadstring(game:HttpGet(
-    BaseUrl .. "Components/Interface.luau"
+    BaseUrl .. "Interface.luau"
 ))()
 
 -- ВАЖНО: Модуль Analytics полностью удален, так как он мог вызывать кик!
