@@ -29,77 +29,18 @@ getgenv().Abysall = {
 }
 
 local Abysall = getgenv().Abysall
+
+-- 4. НАСТРОЙКА КОНФИГОВ
 local Services = setmetatable({}, { __index = function(_, n) return game:GetService(n) end })
 
--- 4. НАСТРОЙКА КОНФИГОВ (в папку Abysall)
 if Abysall.Environment.writefile and Abysall.Environment.readfile then
     if not Abysall.Environment.isfile("Abysall/UserData.json") then
         Abysall.Environment.writefile("Abysall/UserData.json", Services.HttpService:JSONEncode({TotalExecutions = 0}))
     end
 end
 
--- 5. ЗАГРУЗКА ИНТЕРФЕЙСА (БЕЗ ОРИГИНАЛЬНОГО ABYSALL)
+-- 5. ЗАГРУЗКА ИНТЕРФЕЙСА
 Abysall.Interface = loadstring(game:HttpGet(BaseUrl .. "Interface.luau"))()
-
-Abysall.SavePath = "Doors/Game"
-
-local Library = Abysall.Interface.Library
-local Toggles = Library.Toggles
-local Options = Library.Options
-
--- Дальше идет твой оригинальный код (начиная со слов "local function CloneReference")
-
-local function CloneReference(Object)
-    if Abysall and Abysall.Environment.cloneref then
-        return Abysall.Environment.cloneref(Object)
-    end
-    return Object
-end
-
-local Services = setmetatable({}, {
-    __index = function(Self, Name)
-        return CloneReference(game:GetService(Name))
-    end
-})
-
-if Abysall.Environment.writefile and Abysall.Environment.readfile then
-    if not Abysall.Environment.isfile("Abysall/UserData.json") then
-        local Data = {
-            TotalExecutions = 0,
-            UILibrary = "Obsidian"
-        }
-
-        Abysall.Environment.writefile(
-            "Abysall/UserData.json",
-            Services.HttpService:JSONEncode(Data)
-        )
-    end
-
-    local UserData = Abysall.Environment.readfile("Abysall/UserData.json")
-    local Decoded = Services.HttpService:JSONDecode(UserData)
-
-    if not Decoded.TotalExecutions then
-        Decoded.TotalExecutions = 0
-    end
-
-    Decoded.TotalExecutions = Decoded.TotalExecutions + 1
-
-    if not Decoded.UILibrary then
-        Decoded.UILibrary = "Obsidian"
-    end
-
-    Abysall.TotalExecutions = Decoded.TotalExecutions
-    Abysall.UILibrary = Decoded.UILibrary
-
-    Abysall.Environment.writefile(
-        "Abysall/UserData.json",
-        Services.HttpService:JSONEncode(Decoded)
-    )
-end
-
-Abysall.Interface = loadstring(game:HttpGet(
-    BaseUrl .. "Interface.luau"
-))()
 
 -- ВАЖНО: Модуль Analytics полностью удален, так как он мог вызывать кик!
 -- Abysall.Analytics = loadstring(game:HttpGet(BaseUrl .. "Components/Analytics.luau"))()
