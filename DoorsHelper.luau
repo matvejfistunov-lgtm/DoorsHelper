@@ -1,31 +1,53 @@
 -- DoorsHelper | by BetterFly
--- Базируется на Abysall Hub Continued
-
 local LoadStart = tick()
 
--- ВАЖНО: Вернул оригинальное название, чтобы модули Abysall не поняли, что скрипт изменен
-if shared.Hastelepasta then
-    return 
+-- 1. БЛОКИРОВЩИК КИКА (Античит защита)
+if hookmetamethod then
+    local oldNamecall
+    oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+        if getnamecallmethod() == "Kick" and self == game.Players.LocalPlayer then
+            warn("[DoorsHelper] Попытка кика заблокирована!")
+            return
+        end
+        return oldNamecall(self, ...)
+    end)
 end
 
-shared.Hastelepasta = true
+-- 2. ЗАЩИТА ОТ ПОВТОРНОГО ЗАПУСКА
+if shared.DoorsHelperLoaded then return end
+shared.DoorsHelperLoaded = true
 
-
-getgenv().Abysall = {
-    Legit = true
-}
-
-
-local BaseUrl = "https://raw.githubusercontent.com/matvejfistunov-lgtm/DoorsHelper/refs/heads/main/"
+-- 3. ТВОЙ РЕПОЗИТОРИЙ
+local BaseUrl = "https://raw.githubusercontent.com/matvejfistunov-lgtm/DoorsHelper/main/"
 
 getgenv().Abysall = {
+    Legit = true,
+    UILibrary = "Obsidian",
     Environment = loadstring(game:HttpGet(BaseUrl .. "Environment.luau"))(),
     ESPLibrary = loadstring(game:HttpGet(BaseUrl .. "ESP.luau"))(),
-	["16Notice"] = loadstring(game:HttpGet(BaseUrl .. "16Notice.luau"))(),
-    Legit = true
+    ["16Notice"] = loadstring(game:HttpGet(BaseUrl .. "16Notice.luau"))(),
 }
 
 local Abysall = getgenv().Abysall
+local Services = setmetatable({}, { __index = function(_, n) return game:GetService(n) end })
+
+-- 4. НАСТРОЙКА КОНФИГОВ (в папку Abysall)
+if Abysall.Environment.writefile and Abysall.Environment.readfile then
+    if not Abysall.Environment.isfile("Abysall/UserData.json") then
+        Abysall.Environment.writefile("Abysall/UserData.json", Services.HttpService:JSONEncode({TotalExecutions = 0}))
+    end
+end
+
+-- 5. ЗАГРУЗКА ИНТЕРФЕЙСА (БЕЗ ОРИГИНАЛЬНОГО ABYSALL)
+Abysall.Interface = loadstring(game:HttpGet(BaseUrl .. "Interface.luau"))()
+
+Abysall.SavePath = "Doors/Game"
+
+local Library = Abysall.Interface.Library
+local Toggles = Library.Toggles
+local Options = Library.Options
+
+-- Дальше идет твой оригинальный код (начиная со слов "local function CloneReference")
 
 local function CloneReference(Object)
     if Abysall and Abysall.Environment.cloneref then
